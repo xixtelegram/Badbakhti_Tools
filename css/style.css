@@ -1,69 +1,58 @@
-*{
-    box-sizing:border-box;
+* {
+    box-sizing: border-box;
+}
+
+:root {
+
+    --bg: #0e1621;
+
+    --card: #182b3d;
+
+    --card2: #1d2d3d;
+
+    --text: #f5f9fc;
+
+    --counter: #5da9e9;
+    
+    --muted: #e1e6eb;
+
+    --pink: #2b5278;
+
+    --purple: #9b7cff;
+
+    --green: #42d392;
+
+    --yellow: #ffd166;
+
+    --red: #ff5f6d;
+
 }
 
 
-:root{
-
-    --bg:#0f0f14;
-
-    --card:#191922;
-
-    --card2:#22222d;
-
-    --text:#f5f5f7;
-
-    --muted:#a7a7b5;
-
-    --pink:#ff4f81;
-
-    --purple:#8b5cf6;
-
-    --green:#35d07f;
-
-    --yellow:#ffd166;
-
-    --red:#ff5c70;
-
-}
-
-
+/* =========================
+   BASE
+========================= */
 
 html,
-body{
+body {
 
-    margin:0;
+    margin: 0;
 
-    min-height:100%;
+    min-height: 100%;
 
     font-family:
         Tahoma,
         Arial,
         sans-serif;
 
-    background:
+    background: #0e1621;
 
-        radial-gradient(
-            circle at 10% 10%,
-            #35172a 0,
-            transparent 30%
-        ),
-
-        radial-gradient(
-            circle at 90% 90%,
-            #171c3c 0,
-            transparent 30%
-        ),
-
-        var(--bg);
-
-    color:var(--text);
+    color: var(--text);
 
 }
 
 
-
-body{
+body {
 
     padding:
         25px
@@ -73,33 +62,30 @@ body{
 }
 
 
-
 button,
 input,
 textarea,
-select{
+select {
 
-    font-family:inherit;
-
-}
-
-
-
-button{
-
-    border:0;
-
-    cursor:pointer;
+    font-family: inherit;
 
 }
 
+
+button {
+
+    border: 0;
+
+    cursor: pointer;
+
+}
 
 
 /* =========================
    CONTAINER
 ========================= */
 
-.container{
+.container {
 
     width:
         min(
@@ -107,19 +93,18 @@ button{
             100%
         );
 
-    margin:auto;
+    margin: auto;
 
 }
-
 
 
 /* =========================
    HEADER
 ========================= */
 
-header{
+header {
 
-    text-align:center;
+    text-align: center;
 
     padding:
         35px
@@ -129,10 +114,9 @@ header{
 }
 
 
+.logo {
 
-.logo{
-
-    font-size:55px;
+    font-size: 55px;
 
     animation:
         float
@@ -143,18 +127,17 @@ header{
 }
 
 
-
-@keyframes float{
+@keyframes float {
 
     0%,
-    100%{
+    100% {
 
         transform:
             translateY(0);
 
     }
 
-    50%{
+    50% {
 
         transform:
             translateY(-8px)
@@ -165,8 +148,7 @@ header{
 }
 
 
-
-header h1{
+header h1 {
 
     margin:
         10px
@@ -182,26 +164,24 @@ header h1{
 }
 
 
+header p {
 
-header p{
+    color: var(--muted);
 
-    color:var(--muted);
+    font-size: 15px;
 
-    font-size:15px;
-
-    line-height:2;
+    line-height: 2;
 
 }
-
 
 
 /* =========================
    TOOLS
 ========================= */
 
-.tools{
+.tools {
 
-    display:grid;
+    display: grid;
 
     grid-template-columns:
         repeat(
@@ -212,17 +192,16 @@ header p{
             )
         );
 
-    gap:16px;
+    gap: 16px;
 
 }
-
 
 
 /* =========================
    TOOL CARD
 ========================= */
 
-.tool{
+.tool {
 
     background:
 
@@ -241,23 +220,22 @@ header p{
             .07
         );
 
-    border-radius:25px;
+    border-radius: 25px;
 
-    padding:25px;
+    padding: 25px;
 
-    min-height:190px;
+    min-height: 190px;
 
-    transition:.3s;
+    transition: .3s;
 
-    position:relative;
+    position: relative;
 
-    overflow:hidden;
+    overflow: hidden;
 
 }
 
 
-
-.tool:hover{
+.tool:hover {
 
     transform:
         translateY(-7px);
@@ -282,18 +260,16 @@ header p{
 }
 
 
+.tool .emoji {
 
-.tool .emoji{
-
-    font-size:42px;
+    font-size: 42px;
 
 }
 
 
+.tool h2 {
 
-.tool h2{
-
-    font-size:19px;
+    font-size: 19px;
 
     margin:
         15px
@@ -303,48 +279,87 @@ header p{
 }
 
 
+.tool p {
 
-.tool p{
+    color: var(--muted);
 
-    color:var(--muted);
+    font-size: 13px;
 
-    font-size:13px;
-
-    line-height:1.8;
+    line-height: 1.8;
 
 }
 
+
+/* =========================
+   NEW TOOL BADGE
+========================= */
+
+.new-tool-badge {
+
+    position: absolute;
+
+    top: 14px;
+
+    right: 14px;
+
+    background:
+        var(--green);
+
+    color:
+        #0e1621;
+
+    padding:
+        6px
+        10px;
+
+    border-radius: 10px;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    line-height: 1.4;
+
+    box-shadow:
+        0 5px 15px
+        rgba(
+            66,
+            211,
+            146,
+            .2
+        );
+
+}
 
 
 /* =========================
    OPEN
 ========================= */
 
-.open{
+.open {
 
-    width:100%;
+    width: 100%;
 
-    margin-top:12px;
+    margin-top: 12px;
 
-    padding:12px;
+    padding: 12px;
 
-    border-radius:14px;
+    border-radius: 14px;
 
-    background:#ffffff0d;
+    background: #ffffff0d;
 
-    color:white;
+    color: white;
 
     border:
         1px solid
         #ffffff12;
 
-    transition:.2s;
+    transition: .2s;
 
 }
 
 
-
-.open:hover{
+.open:hover {
 
     background:
         var(--pink);
@@ -352,14 +367,13 @@ header p{
 }
 
 
-
 /* =========================
    APP
 ========================= */
 
-.app{
+.app {
 
-    display:none;
+    display: none;
 
     animation:
         appear
@@ -369,73 +383,68 @@ header p{
 }
 
 
+.app.active {
 
-.app.active{
-
-    display:block;
+    display: block;
 
 }
 
 
+@keyframes appear {
 
-@keyframes appear{
+    from {
 
-    from{
-
-        opacity:0;
+        opacity: 0;
 
         transform:
             translateY(15px);
 
     }
 
-    to{
+    to {
 
-        opacity:1;
+        opacity: 1;
 
-        transform:none;
+        transform: none;
 
     }
 
 }
 
 
-
 /* =========================
    BACK
 ========================= */
 
-.back{
+.back {
 
-    background:#ffffff10;
+    background: #ffffff10;
 
-    color:white;
+    color: white;
 
     padding:
         10px
         18px;
 
-    border-radius:13px;
+    border-radius: 13px;
 
-    margin-bottom:20px;
-
-}
-
-
-
-.back:hover{
-
-    background:#ffffff1c;
+    margin-bottom: 20px;
 
 }
 
+
+.back:hover {
+
+    background: #ffffff1c;
+
+}
 
 
 /* =========================
    BOX
 ========================= */
 
-.box{
+.box {
 
     background:
 
@@ -449,9 +458,9 @@ header p{
         1px solid
         #ffffff0c;
 
-    border-radius:28px;
+    border-radius: 28px;
 
-    padding:30px;
+    padding: 30px;
 
     box-shadow:
         0 25px 70px
@@ -460,44 +469,40 @@ header p{
 }
 
 
+.box h2 {
 
-.box h2{
+    font-size: 30px;
 
-    font-size:30px;
-
-    margin-top:0;
-
-}
-
-
-
-.desc{
-
-    color:var(--muted);
-
-    line-height:2;
+    margin-top: 0;
 
 }
 
+
+.desc {
+
+    color: var(--muted);
+
+    line-height: 2;
+
+}
 
 
 /* =========================
    QUESTIONS
 ========================= */
 
-.question{
+.question {
 
-    font-size:22px;
+    font-size: 22px;
 
     margin:
         25px
         0
         12px;
 
-    font-weight:bold;
+    font-weight: bold;
 
 }
-
 
 
 /* =========================
@@ -506,33 +511,32 @@ header p{
 
 input,
 textarea,
-select{
+select {
 
-    width:100%;
+    width: 100%;
 
-    background:#0d0d12;
+    background: #0d0d12;
 
-    color:white;
+    color: white;
 
     border:
         1px solid
         #ffffff15;
 
-    border-radius:14px;
+    border-radius: 14px;
 
-    padding:14px;
+    padding: 14px;
 
-    outline:none;
+    outline: none;
 
-    margin-bottom:12px;
+    margin-bottom: 12px;
 
 }
 
 
-
 input:focus,
 textarea:focus,
-select:focus{
+select:focus {
 
     border-color:
         var(--pink);
@@ -540,92 +544,87 @@ select:focus{
 }
 
 
+textarea {
 
-textarea{
+    min-height: 150px;
 
-    min-height:150px;
-
-    resize:vertical;
+    resize: vertical;
 
 }
-
 
 
 /* =========================
    BUTTONS
 ========================= */
 
-.primary{
+.primary {
 
-    width:100%;
+    width: 100%;
 
-    padding:15px;
+    padding: 15px;
 
-    border-radius:15px;
+    border-radius: 15px;
 
     background:
 
         linear-gradient(
             135deg,
             var(--pink),
-            #ff2865
+            #2b5278
         );
 
-    color:white;
+    color: white;
 
-    font-size:17px;
+    font-size: 17px;
 
-    font-weight:bold;
+    font-weight: bold;
 
-    margin-top:10px;
-
-}
-
-
-
-.secondary{
-
-    width:100%;
-
-    padding:14px;
-
-    border-radius:15px;
-
-    background:#ffffff0d;
-
-    color:white;
-
-    margin-top:10px;
+    margin-top: 10px;
 
 }
 
+
+.secondary {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border-radius: 15px;
+
+    background: #ffffff0d;
+
+    color: white;
+
+    margin-top: 10px;
+
+}
 
 
 /* =========================
    RESULT
 ========================= */
 
-.result{
+.result {
 
-    margin-top:25px;
+    margin-top: 25px;
 
-    background:#0d0d12;
+    background: #0d0d12;
 
-    border-radius:20px;
+    border-radius: 20px;
 
-    padding:25px;
+    padding: 25px;
 
-    text-align:center;
+    text-align: center;
 
-    display:none;
+    display: none;
 
 }
 
 
+.result.show {
 
-.result.show{
-
-    display:block;
+    display: block;
 
     animation:
         appear
@@ -635,46 +634,43 @@ textarea{
 }
 
 
+.result .big {
 
-.result .big{
+    font-size: 50px;
 
-    font-size:50px;
+    font-weight: bold;
 
-    font-weight:bold;
-
-    margin:15px 0;
+    margin: 15px 0;
 
 }
-
 
 
 /* =========================
    BAR
 ========================= */
 
-.bar{
+.bar {
 
-    height:18px;
+    height: 18px;
 
-    background:#ffffff0c;
+    background: #ffffff0c;
 
-    border-radius:20px;
+    border-radius: 20px;
 
-    overflow:hidden;
+    overflow: hidden;
 
-    margin:15px 0;
+    margin: 15px 0;
 
 }
 
 
+.bar span {
 
-.bar span{
+    display: block;
 
-    display:block;
+    height: 100%;
 
-    height:100%;
-
-    width:0;
+    width: 0;
 
     background:
 
@@ -685,73 +681,68 @@ textarea{
             var(--red)
         );
 
-    transition:1s;
+    transition: 1s;
 
 }
-
 
 
 /* =========================
    OPTIONS
 ========================= */
 
-.option{
+.option {
 
-    display:flex;
+    display: flex;
 
-    gap:10px;
+    gap: 10px;
 
-    margin:10px 0;
-
-}
-
-
-
-.option input{
-
-    margin:0;
+    margin: 10px 0;
 
 }
 
 
+.option input {
 
-.add{
+    margin: 0;
 
-    background:#ffffff0d;
+}
 
-    color:white;
+
+.add {
+
+    background: #ffffff0d;
+
+    color: white;
 
     padding:
         10px
         15px;
 
-    border-radius:12px;
+    border-radius: 12px;
 
 }
-
 
 
 /* =========================
    SCORE
 ========================= */
 
-.score{
+.score {
 
-    font-size:55px;
+    font-size: 55px;
 
-    font-weight:bold;
+    font-weight: bold;
 
 }
-
 
 
 /* =========================
    DICE
 ========================= */
 
-.dice-options{
+.dice-options {
 
-    display:grid;
+    display: grid;
 
     grid-template-columns:
         repeat(
@@ -759,7 +750,7 @@ textarea{
             1fr
         );
 
-    gap:10px;
+    gap: 10px;
 
     margin:
         20px
@@ -769,58 +760,54 @@ textarea{
 }
 
 
+.dice-option {
 
-.dice-option{
-
-    position:relative;
-
-}
-
-
-
-.dice-option input{
-
-    position:absolute;
-
-    opacity:0;
-
-    pointer-events:none;
+    position: relative;
 
 }
 
 
+.dice-option input {
 
-.dice-option label{
+    position: absolute;
 
-    display:flex;
+    opacity: 0;
 
-    align-items:center;
+    pointer-events: none;
 
-    justify-content:center;
+}
 
-    height:65px;
 
-    background:#0d0d12;
+.dice-option label {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    height: 65px;
+
+    background: #0d0d12;
 
     border:
         1px solid
         #ffffff15;
 
-    border-radius:16px;
+    border-radius: 16px;
 
-    font-size:24px;
+    font-size: 24px;
 
-    font-weight:bold;
+    font-weight: bold;
 
-    cursor:pointer;
+    cursor: pointer;
 
-    transition:.2s;
+    transition: .2s;
 
 }
 
 
-
-.dice-option label:hover{
+.dice-option label:hover {
 
     border-color:
         var(--pink);
@@ -831,17 +818,16 @@ textarea{
 }
 
 
-
 .dice-option
 input:checked
-+ label{
++ label {
 
     background:
 
         linear-gradient(
             135deg,
             var(--pink),
-            #ff2865
+            #2b5278
         );
 
     border-color:
@@ -851,30 +837,28 @@ input:checked
         translateY(-3px);
 
     box-shadow:
-        0 8px 25px
-        #ff4f8140;
+    0 8px 25px
+    #2b5278;
 
 }
 
 
+.dice {
 
-.dice{
+    font-size: 90px;
 
-    font-size:90px;
-
-    line-height:1;
+    line-height: 1;
 
     margin:
         20px
         0;
 
-    display:inline-block;
+    display: inline-block;
 
 }
 
 
-
-.dice.roll{
+.dice.roll {
 
     animation:
         diceRoll
@@ -884,10 +868,9 @@ input:checked
 }
 
 
+@keyframes diceRoll {
 
-@keyframes diceRoll{
-
-    0%{
+    0% {
 
         transform:
             rotate(0)
@@ -895,7 +878,7 @@ input:checked
 
     }
 
-    20%{
+    20% {
 
         transform:
             rotate(-20deg)
@@ -903,7 +886,7 @@ input:checked
 
     }
 
-    40%{
+    40% {
 
         transform:
             rotate(20deg)
@@ -911,7 +894,7 @@ input:checked
 
     }
 
-    60%{
+    60% {
 
         transform:
             rotate(-15deg)
@@ -919,7 +902,7 @@ input:checked
 
     }
 
-    80%{
+    80% {
 
         transform:
             rotate(10deg)
@@ -927,7 +910,7 @@ input:checked
 
     }
 
-    100%{
+    100% {
 
         transform:
             rotate(0)
@@ -938,60 +921,56 @@ input:checked
 }
 
 
-
-.dice-result-success{
+.dice-result-success {
 
     color:
         var(--green);
 
-    font-size:22px;
+    font-size: 22px;
 
-    font-weight:bold;
+    font-weight: bold;
 
 }
 
 
-
-.dice-result-fail{
+.dice-result-fail {
 
     color:
         var(--red);
 
-    font-size:22px;
+    font-size: 22px;
 
-    font-weight:bold;
+    font-weight: bold;
 
 }
-
 
 
 /* =========================
    FOOTER
 ========================= */
 
-footer{
+footer {
 
-    text-align:center;
+    text-align: center;
 
-    color:#666675;
+    color: #666675;
 
-    margin-top:50px;
+    margin-top: 50px;
 
-    font-size:12px;
+    font-size: 12px;
 
-    line-height:2;
+    line-height: 2;
 
 }
-
 
 
 /* =========================
    MOBILE
 ========================= */
 
-@media(max-width:600px){
+@media(max-width: 600px) {
 
-    body{
+    body {
 
         padding:
             10px
@@ -1000,55 +979,55 @@ footer{
 
     }
 
-    header{
+    header {
 
-        padding-top:25px;
-
-    }
-
-    .logo{
-
-        font-size:45px;
+        padding-top: 25px;
 
     }
 
-    .tool{
+    .logo {
 
-        min-height:170px;
-
-    }
-
-    .box{
-
-        padding:20px;
-
-        border-radius:22px;
+        font-size: 45px;
 
     }
 
-    .box h2{
+    .tool {
 
-        font-size:25px;
-
-    }
-
-    .dice-options{
-
-        gap:7px;
+        min-height: 170px;
 
     }
 
-    .dice-option label{
+    .box {
 
-        height:55px;
+        padding: 20px;
 
-        font-size:20px;
+        border-radius: 22px;
 
     }
 
-    .dice{
+    .box h2 {
 
-        font-size:75px;
+        font-size: 25px;
+
+    }
+
+    .dice-options {
+
+        gap: 7px;
+
+    }
+
+    .dice-option label {
+
+        height: 55px;
+
+        font-size: 20px;
+
+    }
+
+    .dice {
+
+        font-size: 75px;
 
     }
 
