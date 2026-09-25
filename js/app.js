@@ -1,23 +1,19 @@
-const home =
-    document.getElementById("home");
-
-const app =
-    document.getElementById("app");
-
-const homeHeader =
-    document.getElementById("homeHeader");
+const home = document.getElementById("home");
+const app = document.getElementById("app");
+const homeHeader = document.getElementById("homeHeader");
 
 let tools = [];
+let toolsWithCountCache = [];
 
 // لینک Google Apps Script
-const COUNTER_API = "https://script.google.com/macros/s/AKfycbxwKYiZw0DfLvvp6zcDJZWSDtuYZLXA0eA8KERrYUVX_Sn9Nmwekj-SK10Zv49iGC50iA/exec";
-
+const COUNTER_API =
+    "https://script.google.com/macros/s/AKfycbxwKYiZw0DfLvvp6zcDJZWSDtuYZLXA0eA8KERrYUVX_Sn9Nmwekj-SK10Zv49iGC50iA/exec";
 
 /* =========================
    NEW TOOLS
 ========================= */
 
-// ابزارهایی که در حال حاضر قدیمی هستند
+// id واقعی ابزارها (مطابق export هر فایل)
 const INITIAL_TOOL_IDS = new Set([
     "age",
     "badbakhti",
@@ -26,9 +22,9 @@ const INITIAL_TOOL_IDS = new Set([
     "decision",
     "dice",
     "fal",
-    "friend",
+    "friendquiz",
     "life",
-    "madrak",
+    "certificate",
     "message",
     "migration",
     "money",
@@ -37,126 +33,53 @@ const INITIAL_TOOL_IDS = new Set([
     "situationship",
     "sleep",
     "versus",
-    "why-single"
+    "why-single",
+    "wheel"
 ]);
 
 const NEW_TOOLS_STORAGE_KEY = "badbakhti_new_tools";
 
-
-// دریافت لیست ابزارهایی که به عنوان جدید شناخته شده‌اند
 function getNewTools() {
-
     try {
-
-        const saved =
-            localStorage.getItem(
-                NEW_TOOLS_STORAGE_KEY
-            );
-
-        if (!saved) {
-            return [];
-        }
-
+        const saved = localStorage.getItem(NEW_TOOLS_STORAGE_KEY);
+        if (!saved) return [];
         const parsed = JSON.parse(saved);
-
-        return Array.isArray(parsed)
-            ? parsed
-            : [];
-
+        return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
-
         return [];
-
     }
-
 }
 
-
-// ذخیره لیست ابزارهای جدید
 function saveNewTools(ids) {
-
     try {
-
-        localStorage.setItem(
-            NEW_TOOLS_STORAGE_KEY,
-            JSON.stringify(ids)
-        );
-
+        localStorage.setItem(NEW_TOOLS_STORAGE_KEY, JSON.stringify(ids));
     } catch (e) {
-
-        // اگر localStorage در دسترس نبود،
-        // پروژه بدون این قابلیت هم به کار خودش ادامه می‌دهد.
-
+        // localStorage در دسترس نباشد — ادامه بدون این قابلیت
     }
-
 }
 
-
-// بررسی و ثبت ابزارهای جدید
 function updateNewTools(toolsWithCount) {
+    let newTools = getNewTools();
+    const currentIds = new Set(toolsWithCount.map((tool) => tool.id));
 
-    let newTools =
-        getNewTools();
+    newTools = newTools.filter((id) => currentIds.has(id));
 
-    const currentIds =
-        new Set(
-            toolsWithCount.map(tool => tool.id)
-        );
+    toolsWithCount.forEach((tool) => {
+        const isInitialTool = INITIAL_TOOL_IDS.has(tool.id);
+        const alreadyNew = newTools.includes(tool.id);
 
-
-    // پاک کردن ابزارهایی که دیگر در پروژه وجود ندارند
-    newTools =
-        newTools.filter(
-            id => currentIds.has(id)
-        );
-
-
-    toolsWithCount.forEach(tool => {
-
-        const isInitialTool =
-            INITIAL_TOOL_IDS.has(tool.id);
-
-        const alreadyNew =
-            newTools.includes(tool.id);
-
-
-        // ابزارهایی که قبلاً جدید ثبت نشده‌اند
-        // و در لیست ابزارهای قدیمی اولیه هم نیستند،
-        // ابزار جدید محسوب می‌شوند.
-        if (
-            !isInitialTool &&
-            !alreadyNew &&
-            tool.count < 150
-        ) {
-
+        if (!isInitialTool && !alreadyNew && tool.count < 150) {
             newTools.push(tool.id);
-
         }
 
-
-        // وقتی ابزار به 150 استفاده رسید،
-        // وضعیت جدید بودن آن تمام می‌شود.
-        if (
-            alreadyNew &&
-            tool.count >= 150
-        ) {
-
-            newTools =
-                newTools.filter(
-                    id => id !== tool.id
-                );
-
+        if (alreadyNew && tool.count >= 150) {
+            newTools = newTools.filter((id) => id !== tool.id);
         }
-
     });
 
-
     saveNewTools(newTools);
-
     return newTools;
-
 }
-
 
 /* =========================
    COUNTER FUNCTIONS
@@ -164,7 +87,7 @@ function updateNewTools(toolsWithCount) {
 
 async function getCount(key) {
     try {
-        const res = await fetch(`${COUNTER_API}?key=${key}`);
+        const res = await fetch(`${COUNTER_API}?key=${encodeURIComponent(key)}`);
         const data = await res.json();
         return data.value || 0;
     } catch (e) {
@@ -174,7 +97,9 @@ async function getCount(key) {
 
 async function hitCount(key) {
     try {
-        const res = await fetch(`${COUNTER_API}?action=hit&key=${key}`);
+        const res = await fetch(
+            `${COUNTER_API}?action=hit&key=${encodeURIComponent(key)}`
+        );
         const data = await res.json();
         return data.value || 0;
     } catch (e) {
@@ -182,83 +107,64 @@ async function hitCount(key) {
     }
 }
 
-
 /* =========================
    LOAD TOOLS
 ========================= */
 
-async function loadTools(){
+async function loadTools() {
+    home.innerHTML = `
+        <div class="tools-loading">
+            <div class="spinner" aria-hidden="true"></div>
+            <div>در حال بارگذاری ابزارها...</div>
+        </div>
+    `;
 
-    try{
+    try {
+        const response = await fetch("tools.json", { cache: "no-store" });
 
-        const response =
-            await fetch(
-                "tools.json",
-                {
-                    cache:"no-store"
-                }
-            );
-
-
-        if(!response.ok){
+        if (!response.ok) {
             throw new Error("tools.json not found");
         }
 
-
         const files = await response.json();
 
-
         const modules = await Promise.all(
-            files.map(
-                file =>
-                    import(`../tools/${file}?v=${Date.now()}`)
-            )
+            files.map((file) => import(`../tools/${file}?v=${Date.now()}`))
         );
 
+        tools = modules
+            .map((module) => module.default || module.tool)
+            .filter(Boolean);
 
-        tools =
-            modules
-                .map(module => module.default || module.tool)
-                .filter(Boolean);
-
-
-        renderHome();
-
-    }
-
-    catch(error){
-
+        await renderHome();
+    } catch (error) {
         console.error(error);
-
         home.innerHTML = `
-            <div class="tool">
+            <div class="tool" style="cursor:default">
                 <div class="emoji">⚠️</div>
                 <h2>خطا در بارگذاری ابزارها</h2>
                 <p>
                     فایل tools.json پیدا نشد
                     یا ابزارها قابل بارگذاری نیستند.
+                    صفحه را رفرش کنید.
                 </p>
             </div>
         `;
     }
 }
 
-
-
 /* =========================
    RENDER HOME
 ========================= */
 
-async function renderHome(){
-
-    // حالت لودینگ
+async function renderHome() {
     home.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 40px 0; color: var(--muted);">
-            در حال بارگذاری ابزارها و آمار...
+        <div class="tools-loading">
+            <div class="spinner" aria-hidden="true"></div>
+            <div>در حال دریافت آمار...</div>
         </div>
     `;
 
-    // گرفتن آمار همه ابزارها
     const toolsWithCount = await Promise.all(
         tools.map(async (tool) => {
             const count = await getCount(tool.id);
@@ -266,156 +172,191 @@ async function renderHome(){
         })
     );
 
+    toolsWithCountCache = toolsWithCount;
 
-    // بررسی ابزارهای جدید
-    const newTools =
-        updateNewTools(toolsWithCount);
+    const newTools = updateNewTools(toolsWithCount);
 
-
-    // مرتب‌سازی:
-    // 1. ابزارهای جدید اول
-    // 2. سپس بر اساس بیشترین استفاده
     toolsWithCount.sort((a, b) => {
-
-        const aIsNew =
-            newTools.includes(a.id);
-
-        const bIsNew =
-            newTools.includes(b.id);
-
-
-        if (aIsNew && !bIsNew) {
-            return -1;
-        }
-
-        if (!aIsNew && bIsNew) {
-            return 1;
-        }
-
-
+        const aIsNew = newTools.includes(a.id);
+        const bIsNew = newTools.includes(b.id);
+        if (aIsNew && !bIsNew) return -1;
+        if (!aIsNew && bIsNew) return 1;
         return b.count - a.count;
-
     });
 
+    paintHome(toolsWithCount, newTools);
+}
 
-    // رندر نهایی
+function paintHome(list, newTools) {
+    const searchHtml = `
+        <div class="tools-search-wrap">
+            <label for="toolsSearch" class="visually-hidden">جستجوی ابزار</label>
+            <input
+                type="search"
+                id="toolsSearch"
+                class="tools-search"
+                placeholder="جستجوی ابزار..."
+                autocomplete="off"
+            >
+        </div>
+    `;
+
+    if (!list.length) {
+        home.innerHTML =
+            searchHtml +
+            `<div class="tools-empty">ابزاری پیدا نشد.</div>`;
+        bindSearch(newTools);
+        return;
+    }
+
     home.innerHTML =
-        toolsWithCount.map(tool => {
+        searchHtml +
+        list
+            .map((tool) => {
+                const isNew = newTools.includes(tool.id);
+                return `
+            <article
+                class="tool"
+                data-id="${escapeHTML(tool.id)}"
+                data-tool="${escapeHTML(tool.id)}"
+                tabindex="0"
+                role="button"
+                aria-label="${escapeHTML(tool.title)}"
+            >
+                ${isNew ? `<div class="new-tool-badge">ابزار جدید</div>` : ""}
 
-            const isNew =
-                newTools.includes(tool.id);
-
-            return `
-            <div class="tool" data-id="${escapeHTML(tool.id)}">
-
-                ${
-                    isNew
-                    ? `<div class="new-tool-badge"> ابزار جدید</div>`
-                    : ""
-                }
-
-                <div class="emoji">
+                <div class="emoji" aria-hidden="true">
                     ${tool.icon || "🧰"}
                 </div>
 
-                <h2>
-                    ${escapeHTML(tool.title)}
-                </h2>
+                <h2>${escapeHTML(tool.title)}</h2>
 
-                <p>
-                    ${escapeHTML(tool.description || "")}
-                </p>
+                <p>${escapeHTML(tool.description || "")}</p>
 
-                <div class="tool-usage" style="
-                    font-size: 12px;
-                    color: var(--muted);
-                    margin: 8px 0 4px;
-                    opacity: 0.85;
-                ">
+                <div class="tool-usage">
                     ${
                         tool.count > 0
-                        ? `استفاده شده توسط <b style="color:var(--counter)">${tool.count.toLocaleString("fa-IR")}</b> نفر`
-                        : `هنوز کسی استفاده نکرده`
+                            ? `استفاده شده توسط <b>${tool.count.toLocaleString("fa-IR")}</b> نفر`
+                            : `هنوز کسی استفاده نکرده`
                     }
                 </div>
 
-                <button class="open" data-tool="${escapeHTML(tool.id)}">
+                <button
+                    type="button"
+                    class="open"
+                    data-tool="${escapeHTML(tool.id)}"
+                    tabindex="-1"
+                >
                     ${escapeHTML(tool.buttonText || "باز کردن")}
                 </button>
-
-            </div>
+            </article>
         `;
+            })
+            .join("");
 
-        }).join("");
+    home.querySelectorAll("[data-tool]").forEach((el) => {
+        const open = () => openApp(el.dataset.tool || el.getAttribute("data-tool"));
 
-
-    // رویداد کلیک
-    home.querySelectorAll("[data-tool]").forEach(button => {
-        button.addEventListener("click", () => {
-            openApp(button.dataset.tool);
-        });
+        if (el.classList.contains("tool")) {
+            el.addEventListener("click", (e) => {
+                // اگر روی دکمه داخلی کلیک شد، دوبار باز نشود
+                if (e.target.closest("button.open")) return;
+                open();
+            });
+            el.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    open();
+                }
+            });
+        } else if (el.classList.contains("open")) {
+            el.addEventListener("click", (e) => {
+                e.stopPropagation();
+                open();
+            });
+        }
     });
+
+    bindSearch(newTools);
 }
 
+function bindSearch(newTools) {
+    const input = document.getElementById("toolsSearch");
+    if (!input) return;
 
+    input.addEventListener("input", () => {
+        const q = input.value.trim().toLowerCase();
+        const filtered = !q
+            ? toolsWithCountCache
+            : toolsWithCountCache.filter(
+                  (t) =>
+                      (t.title || "").toLowerCase().includes(q) ||
+                      (t.description || "").toLowerCase().includes(q) ||
+                      (t.id || "").toLowerCase().includes(q)
+              );
+
+        // re-sort same way
+        const sorted = [...filtered].sort((a, b) => {
+            const aIsNew = newTools.includes(a.id);
+            const bIsNew = newTools.includes(b.id);
+            if (aIsNew && !bIsNew) return -1;
+            if (!aIsNew && bIsNew) return 1;
+            return b.count - a.count;
+        });
+
+        // keep search value
+        const currentVal = input.value;
+        paintHome(sorted, newTools);
+        const again = document.getElementById("toolsSearch");
+        if (again) {
+            again.value = currentVal;
+            again.focus();
+            // move cursor to end
+            const len = again.value.length;
+            again.setSelectionRange(len, len);
+        }
+    });
+}
 
 /* =========================
    OPEN TOOL
 ========================= */
 
-async function openApp(id){
-
-    const tool = tools.find(item => item.id === id);
-
-    if(!tool) return;
-
+async function openApp(id) {
+    const tool = tools.find((item) => item.id === id);
+    if (!tool) return;
 
     home.style.display = "none";
     homeHeader.style.display = "none";
     app.classList.add("active");
 
-
     app.innerHTML = `
-        <button class="back" id="backButton">
+        <button type="button" class="back" id="backButton" aria-label="بازگشت به صفحه اصلی">
             ← برگشت
         </button>
 
         <div class="box">
             ${tool.html}
 
-            <div id="toolCounter" style="
-                margin-top: 28px;
-                padding-top: 16px;
-                border-top: 1px solid rgba(255,255,255,0.08);
-                text-align: center;
-                color: var(--muted);
-                font-size: 13.5px;
-            ">
+            <div id="toolCounter" class="tool-counter">
                 در حال دریافت تعداد استفاده...
             </div>
         </div>
     `;
 
-
-    document.getElementById("backButton")
-        .addEventListener("click", goHome);
-
+    document.getElementById("backButton").addEventListener("click", goHome);
 
     if (typeof tool.init === "function") {
         tool.init(app);
     }
 
-
     window.scrollTo({ top: 0, behavior: "smooth" });
 
-
-    // افزایش شمارنده + نمایش
     try {
         const count = await hitCount(tool.id);
-
         const counterEl = document.getElementById("toolCounter");
         if (counterEl) {
-            counterEl.innerHTML = `این ابزار تا حالا توسط <b style="color: var(--counter)">${Number(count).toLocaleString("fa-IR")}</b> نفر استفاده شده`;
+            counterEl.innerHTML = `این ابزار تا حالا توسط <b>${Number(count).toLocaleString("fa-IR")}</b> نفر استفاده شده`;
         }
     } catch (e) {
         const counterEl = document.getElementById("toolCounter");
@@ -423,32 +364,25 @@ async function openApp(id){
     }
 }
 
-
-
 /* =========================
    HOME
 ========================= */
 
-function goHome(){
-
+function goHome() {
     app.classList.remove("active");
     app.innerHTML = "";
     home.style.display = "grid";
     homeHeader.style.display = "block";
-
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
-
 
 /* =========================
    RESULT
 ========================= */
 
-export function showResult(id, html){
-
+export function showResult(id, html) {
     const box = document.getElementById(id);
-    if(!box) return;
+    if (!box) return;
 
     box.innerHTML = html;
     box.classList.add("show");
@@ -459,23 +393,19 @@ export function showResult(id, html){
     });
 }
 
-
-
 /* =========================
    FORMAT
 ========================= */
 
-export function format(number){
+export function format(number) {
     return Math.round(number).toLocaleString("fa-IR") + " تومان";
 }
-
-
 
 /* =========================
    ESCAPE HTML
 ========================= */
 
-export function escapeHTML(text){
+export function escapeHTML(text) {
     return String(text)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -483,8 +413,6 @@ export function escapeHTML(text){
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
-
-
 
 /* =========================
    START
