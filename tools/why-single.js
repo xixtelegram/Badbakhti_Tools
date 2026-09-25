@@ -317,13 +317,13 @@ export default {
                 </div>
 
                 <div style="display:flex; gap:10px; margin-bottom:18px;">
-                    <button class="secondary gender-btn" data-gender="male" style="flex:1; transition:all 0.2s ease; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.04);">
+                    <button class="secondary gender-btn" data-gender="male" style="flex:1; transition:all 0.2s ease; border:1px solid rgba(255,255,255,0.22); background:rgba(255,255,255,0.12); color:#fff; font-weight:600;">
                         🧑 مرد
                     </button>
-                    <button class="secondary gender-btn" data-gender="female" style="flex:1; transition:all 0.2s ease; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.04);">
+                    <button class="secondary gender-btn" data-gender="female" style="flex:1; transition:all 0.2s ease; border:1px solid rgba(255,255,255,0.22); background:rgba(255,255,255,0.12); color:#fff; font-weight:600;">
                         👩 زن
                     </button>
-                    <button class="secondary gender-btn" data-gender="other" style="flex:1; transition:all 0.2s ease; border:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.04);">
+                    <button class="secondary gender-btn" data-gender="other" style="flex:1; transition:all 0.2s ease; border:1px solid rgba(255,255,255,0.22); background:rgba(255,255,255,0.12); color:#fff; font-weight:600;">
                         🧑‍🎤 غیر
                     </button>
                 </div>
@@ -338,7 +338,7 @@ export default {
                     min="15" 
                     max="70" 
                     placeholder="مثلاً 25" 
-                    style="width:100%; padding:12px; border-radius:10px; border:none; margin-bottom:16px; font-size:1rem; background:rgba(255,255,255,0.05);"
+                    style="width:100%; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.18); margin-bottom:16px; font-size:1rem; background:rgba(255,255,255,0.1); color:#fff;"
                 />
 
                 <button class="primary" id="confirmGenderAge">
@@ -352,7 +352,8 @@ export default {
 
                     document.querySelectorAll(".gender-btn").forEach(b => {
                         b.classList.remove("active");
-                        b.style.background = "rgba(255,255,255,0.04)";
+                        b.style.background = "rgba(255,255,255,0.12)";
+                        b.style.borderColor = "rgba(255,255,255,0.22)";
                         b.style.borderColor = "rgba(255,255,255,0.06)";
                         b.style.transform = "scale(1)";
                     });
@@ -411,7 +412,7 @@ export default {
 
                 <div>
                     ${shuffled.map((a, i) => `
-                        <button class="secondary answer-btn" data-id="${i}" style="width:100%; text-align:right; padding:12px 16px; margin-bottom:8px; border-radius:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); cursor:pointer; font-size:0.95rem; display:flex; align-items:center; gap:10px; transition:all 0.2s ease;">
+                        <button class="secondary answer-btn" data-id="${i}" style="width:100%; text-align:right; padding:12px 16px; margin-bottom:8px; border-radius:10px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); color:#fff; cursor:pointer; font-size:0.95rem; display:flex; align-items:center; gap:10px; transition:all 0.2s ease; font-weight:500;">
                             <span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:rgba(251,191,36,0.15); color:#fbbf24; font-weight:bold; font-size:0.8rem; flex-shrink:0;">${String.fromCharCode(65 + i)}</span>
                             <span>${a[0]}</span>
                         </button>
