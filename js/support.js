@@ -13,10 +13,10 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--pink), #ff2865);
+            background: #2b5278;
             border: none;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(255, 79, 129, 0.4);
+            box-shadow: 0 8px 25px rgba(43, 82, 120, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -27,7 +27,7 @@
 
         .support-widget-button:hover {
             transform: scale(1.1);
-            box-shadow: 0 12px 35px rgba(255, 79, 129, 0.6);
+            box-shadow: 0 12px 35px rgba(43, 82, 120, 0.6);
         }
 
         .support-widget-button:active {
@@ -123,13 +123,13 @@
         }
 
         .support-modal-btn-primary {
-            background: linear-gradient(135deg, var(--pink), #ff2865);
+            background: #2b5278;
             color: white;
         }
 
         .support-modal-btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 79, 129, 0.4);
+            box-shadow: 0 8px 25px rgba(43, 82, 120, 0.4);
         }
 
         .support-modal-btn-secondary {
@@ -179,10 +179,12 @@
             }
         }
     `;
+
     document.head.appendChild(style);
 
     // HTML
     const container = document.createElement("div");
+
     container.innerHTML = `
         <button class="support-widget-button" id="supportBtn" title="پشتیبانی">
             💬
@@ -190,6 +192,7 @@
 
         <div class="support-modal" id="supportModal">
             <div class="support-modal-content">
+
                 <div class="support-modal-emoji">
                     🤝
                 </div>
@@ -203,6 +206,7 @@
                 </div>
 
                 <div class="support-modal-buttons">
+
                     <a 
                         href="https://t.me/XIXStrawberry?direct" 
                         target="_blank" 
@@ -220,33 +224,46 @@
                     >
                         📢 کانال
                     </a>
+
                 </div>
 
                 <button class="support-modal-close" id="closeSupport">
                     بسته شود
                 </button>
+
             </div>
         </div>
     `;
+
     document.body.appendChild(container);
 
     // JavaScript
-    const supportBtn = document.getElementById("supportBtn");
-    const supportModal = document.getElementById("supportModal");
-    const closeSupport = document.getElementById("closeSupport");
+    const supportBtn =
+        document.getElementById("supportBtn");
+
+    const supportModal =
+        document.getElementById("supportModal");
+
+    const closeSupport =
+        document.getElementById("closeSupport");
+
 
     supportBtn.addEventListener("click", () => {
         supportModal.classList.add("active");
     });
 
+
     closeSupport.addEventListener("click", () => {
         supportModal.classList.remove("active");
     });
 
+
     supportModal.addEventListener("click", (e) => {
+
         if (e.target === supportModal) {
             supportModal.classList.remove("active");
         }
+
     });
 
 })();
