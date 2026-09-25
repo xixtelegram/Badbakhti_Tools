@@ -149,13 +149,15 @@
         }
 
         .support-modal-btn-secondary {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.14);
             color: #f5f9fc;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            font-weight: 600;
         }
 
         .support-modal-btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.32);
         }
 
         .support-modal-close {
